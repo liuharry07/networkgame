@@ -4,6 +4,7 @@ public class Main {
         hostGame();
         joinGame("localhost");
         joinGame("localhost");
+        joinGame("localhost");
 
 
         //if joining a game, run this code with host's IP address:
@@ -14,7 +15,11 @@ public class Main {
         //start server in new thread
         new Thread() {
             public void run() {
-                new Server();
+                try {
+                    new Server();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }.start();
 

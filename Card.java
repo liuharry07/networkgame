@@ -43,4 +43,8 @@ public class Card {
     public String toString() {
         return suits[suit] + " " + values[value];
     }
+
+    public String toMessage() {
+        return suit + " " + value;
+    }
 }
