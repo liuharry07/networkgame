@@ -135,7 +135,14 @@ public class Client extends Thread implements ActionListener {
                     Card card;
                     card = new Card(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
                     community.add(card);
-
+                }
+                if(tokens[0].equals("win")) {
+                    chips += Integer.parseInt(tokens[1]);
+                }
+                if(tokens[0].equals("reset")) {
+                    community = new ArrayList<Card>();
+                    incomingBet = 0;
+                    pot = 0;
                 }
                 updateDisplay();
             }
@@ -155,7 +162,8 @@ public class Client extends Thread implements ActionListener {
         String command = e.getActionCommand();
         switch(command) {
             case "bet": {
-                if(Integer.parseInt(betValue.getText()) > incomingBet) {
+                int betAmount = Integer.parseInt(betValue.getText());
+                if(betAmount > incomingBet && betAmount <= chips) {
                     send("bet " + betValue.getText());
                     bet.setEnabled(false);
                     check.setEnabled(false);
@@ -164,8 +172,11 @@ public class Client extends Thread implements ActionListener {
                     chips -= Integer.parseInt(betValue.getText());
                     updateDisplay();
                 }
-                else {
+                else if (betAmount > incomingBet) {
                     chipsDisplay.setText(chips + "\n incoming bet: " + incomingBet + "\n ERROR NEED BIGGER BET DUMBASS");
+                }
+                else if (betAmount <= chips) {
+                    chipsDisplay.setText(chips + "\n incoming bet: " + incomingBet + "\n ERROR YOU CAN'T BET MONEY YOU DON'T HAVE YOU SILLY GOOBER");
                 }
                 break;
             }

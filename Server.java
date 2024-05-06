@@ -10,8 +10,10 @@ public class Server {
     private int pot;
     private Card[] community;
     private boolean[] foldedPlayers;
+    private int numFoldedPlayers;
+    private int startingPlayer;
 
-    Deck deck = new Deck();
+    Deck deck;
 
     public Server() throws InterruptedException {
         try {
@@ -25,37 +27,43 @@ public class Server {
                 threads[i] = new ServerThread(sockets[i], this, i);
             }
 
-            pot = 0;
-            bet = 0;
-            community = new Card[5];
-            foldedPlayers = new boolean[players];
+            startingPlayer = 0;
 
-            deal();
-            pot += goAround(0) * players;
-            for(int i = 0; i < players; ++i) {
-                threads[i].send("pot " + pot);
-            }
-            System.out.println(pot);
-            bet = 0;
-            flop();
-            pot += goAround(0) * players;
-            for(int i = 0; i < players; ++i) {
-                threads[i].send("pot " + pot);
-            }
-            bet = 0;
-            turn();
-            pot += goAround(0) * players;
-            for(int i = 0; i < players; ++i) {
-                threads[i].send("pot " + pot);
-            }
-            bet = 0;
-            river();
-            pot += goAround(0) * players;
-            for(int i = 0; i < players; ++i) {
-                threads[i].send("pot " + pot);
-            }
-            bet = 0;
+            while(true) {
+                pot = 0;
+                bet = 0;
+                deck = new Deck();
+                community = new Card[5];
+                foldedPlayers = new boolean[players];
+                numFoldedPlayers = 0;
+                for(int i = 0; i < players; ++i) {
+                    threads[i].send("reset");
+                }
 
+                deal();
+                if(!getBets(startingPlayer)) {
+                    flop();
+                    if(!getBets(startingPlayer)) {
+                        turn();
+                        if(!getBets(startingPlayer)) {
+                            river();
+                            getBets(startingPlayer);
+                        }
+                    }
+                }
+                int winner = 0;
+                for(int i = 0; i < players; ++i) {
+                    if(!foldedPlayers[i]) {
+                        winner = i;
+                    }
+                }
+                threads[winner].send("win " + pot);
+
+                ++startingPlayer; 
+                if(startingPlayer == players) {
+                    startingPlayer = 0;
+                }
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -131,5 +139,22 @@ public class Server {
     public synchronized void fold(int playerNum) {
         notifyAll();
         foldedPlayers[playerNum] = true;
+        ++numFoldedPlayers;
+    }
+
+    public boolean getBets(int startingPlayer) {
+        try {
+            pot += goAround(startingPlayer) * (players - numFoldedPlayers);
+            for(int i = 0; i < players; ++i) {
+                threads[i].send("pot " + pot);
+            }
+            bet = 0;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(numFoldedPlayers == players - 1) {
+            return true;
+        }
+        return false;
     }
 }
