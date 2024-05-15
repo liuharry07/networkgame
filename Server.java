@@ -18,7 +18,7 @@ public class Server {
     public Server() throws InterruptedException {
         try {
             ServerSocket serverSocket = new ServerSocket(9000);
-            players = 3;
+            players = 2;
             threads = new ServerThread[players];
             sockets = new Socket[players];
 
@@ -28,6 +28,10 @@ public class Server {
             }
 
             startingPlayer = 0;
+
+            for(int i = 0; i < players; ++i) {
+                threads[i].send("start " + players);
+            }
 
             while(true) {
                 pot = 0;
@@ -138,6 +142,9 @@ public class Server {
 
     public synchronized void fold(int playerNum) {
         notifyAll();
+        for(int i = 0; i < players; ++i) {
+            threads[i].send("fold " + playerNum);
+        }
         foldedPlayers[playerNum] = true;
         ++numFoldedPlayers;
     }

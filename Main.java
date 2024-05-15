@@ -4,7 +4,7 @@ public class Main {
         hostGame();
         joinGame("localhost");
         joinGame("localhost");
-        joinGame("localhost");
+        //joinGame("localhost");
 
 
         //if joining a game, run this code with host's IP address:

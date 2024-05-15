@@ -17,11 +17,15 @@ public class Client extends Thread implements ActionListener {
     private JTextField betValue;
     private JTextArea chipsDisplay;
     private JTextArea tableDisplay;
+   
+    //need to write method
+    private int players;
     private Card[] cards;
     private int chips;
     private int pot;
     private int incomingBet;
     private ArrayList<Card> community;
+    private boolean[] foldedPlayers;
 
     public Client(String ipAddress) {
         try {
@@ -109,6 +113,8 @@ public class Client extends Thread implements ActionListener {
                 String[] tokens = message.split(" ");
                 if(tokens[0].equals("start")) {
                     bet.setEnabled(true);
+                    players = Integer.parseInt(tokens[1]);
+                    foldedPlayers = new boolean[players];
                     //call.setEnabled(true);
                 }
                 if(tokens[0].equals("deal")) {
