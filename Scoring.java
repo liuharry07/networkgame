@@ -250,7 +250,7 @@ public class Scoring {
        }
        if(posStraight.size()>=5)
        {
-        if(posStraight.get(0).getValue() == 13 && 
+        if(posStraight.get(0).getValue() == 12 && 
             posStraight.get(posStraight.size()-1).getValue() == 0 && 
             posStraight.get(posStraight.size()-2).getValue() == 1 && 
             posStraight.get(posStraight.size()-3).getValue() == 2 && 
