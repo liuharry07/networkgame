@@ -10,7 +10,7 @@ public class Scoring {
     public static void main(String[] args)
     {
         Card[] bob = new Card[7];
-        bob[0] = new Card(0, 13);
+        bob[0] = new Card(0, 12);
         bob[1] = new Card(0, 0);
         bob[2] = new Card(0, 1);
         bob[3] = new Card(1, 3);
@@ -18,13 +18,13 @@ public class Scoring {
         bob[5] = new Card(3, 5);
         bob[6] = new Card(1, 1);
         Scoring joe = new Scoring(bob);
-        System.out.println(joe.valualateHand());
+        System.out.println(joe.valuateHand());
         
     }
 
-    public String valualateHand()
+    public int[] valuateHand()
     {
-        String finalhand = new String("");
+        int[] finalhand = new int[3];
         ArrayList<Card> posStraight = new ArrayList<Card>();
         boolean pair = false;
         boolean triple = false;
@@ -254,17 +254,24 @@ public class Scoring {
             posStraight.get(posStraight.size()-1).getValue() == 0 && 
             posStraight.get(posStraight.size()-2).getValue() == 1 && 
             posStraight.get(posStraight.size()-3).getValue() == 2 && 
-            posStraight.get(posStraight.size()-1).getValue() == 3)
+            posStraight.get(posStraight.size()-4).getValue() == 3)
         {
             straight = true;
             straightTop = 4;
+            straightList[0] = posStraight.get(0);
+            straightList[1] =  posStraight.get(posStraight.size()-1);
+            straightList[2] =  posStraight.get(posStraight.size()-2);
+            straightList[3] =  posStraight.get(posStraight.size()-3);
+            straightList[4] =  posStraight.get(posStraight.size()-4);
         }
-        int a=0;
+        else
+        {
+            int a=0;
         System.out.println(a<6 && (posStraight.get(a).getValue()-posStraight.get(a+1).getValue())==1 );
-        while(a>=6 && (posStraight.get(a).getValue()-posStraight.get(a+1).getValue())!=1);
+        while(a<6 && (posStraight.get(a).getValue()-posStraight.get(a+1).getValue())==1);
         {
             straightList[a] = posStraight.get(a);
-            a=a+1;
+            a++;
         }
         System.out.println("through loop 2");
         if(a>=5)
@@ -293,7 +300,9 @@ public class Scoring {
                 straightTop = posStraight.get(0).getValue();
             }
         }
+        }
     }
+
         if(straight)
         {
             int spade = 0;
@@ -301,7 +310,7 @@ public class Scoring {
             int diamond = 0;
             int heart = 0;
             int through = 0;
-            while(through<4)
+            while(through<5)
             {
                 if(straightList[through].getSuit() == 0)
                 {
@@ -319,6 +328,7 @@ public class Scoring {
                 {
                     heart ++;
                 }
+                through ++;
             }
             System.out.println("through loop 4");
             if(spade >= 5 || club >= 5 || diamond >= 5 || heart >= 5)
@@ -329,19 +339,23 @@ public class Scoring {
         System.out.println("got here 2");
         if(straightFlush)
         {
-            finalhand = "8 " + straightTop;
+            finalhand[0] = 8;
+            finalhand[1] = 0;
         }
         else if(quad)
         {
-            finalhand = "7 " + four;
+            finalhand[0] = 7;
+            finalhand[1] = four;
         }
         else if(flush)
         {
-            finalhand = "4 " + flushHighCard;
+            finalhand[0] = 4;
+            finalhand[1] = flushHighCard;
         }
         else if(straight)
         {
-            finalhand = "3 " + straightTop;
+            finalhand[0] = 3;
+            finalhand[1] = straightTop;
         }
         else if(triple)
         {
@@ -353,20 +367,27 @@ public class Scoring {
                     {
                             if(doublePair>triplePair && doublePair>paired)
                             {
-                                finalhand = "6 " + dubTriple + " " + doublePair;
+                                finalhand[0] = 6;
+                                finalhand[1] = dubTriple;
+                                finalhand[2] = doublePair;
                             }
                             else if(doublePair>triplePair && paired>doublePair)
                             {
-                                finalhand = "6 " + dubTriple + " " + paired;
+                                finalhand[0] = 6;
+                                finalhand[1] = dubTriple;
+                                finalhand[2] = paired;
                             }
                             else if(triplePair>paired)
                             {
-                                finalhand = "6 " + dubTriple + " " + triplePair;
+                                finalhand[0] = 6;
+                                finalhand[1] = dubTriple;
+                                finalhand[2] = triplePair;
                             }
                     }
                     else
                     {
-                        finalhand = "3 " + dubTriple;
+                        finalhand[0] = 3;
+                        finalhand[1] = dubTriple;
                     }
                 }
                 else
@@ -375,20 +396,27 @@ public class Scoring {
                     {
                             if(doublePair>triplePair && doublePair>paired)
                             {
-                                finalhand = "6 " + trip + " " + doublePair;
+                                finalhand[0] = 6;
+                                finalhand[1] = trip;
+                                finalhand[2] = doublePair;
                             }
                             else if(doublePair>triplePair && paired>doublePair)
                             {
-                                finalhand = "6 " + trip + " " + paired;
+                                finalhand[0] = 6;
+                                finalhand[1] = trip;
+                                finalhand[2] = paired;
                             }
                             else if(triplePair>paired)
                             {
-                                finalhand = "6 " + trip + " " + triplePair;
+                                finalhand[0] = 6;
+                                finalhand[1] = trip;
+                                finalhand[2] = triplePair;
                             }
                     }
                     else
                     {
-                        finalhand = "3 " + trip;
+                        finalhand[0] = 3;
+                        finalhand[1] = trip;
                     }
                 }
             }
@@ -399,25 +427,33 @@ public class Scoring {
         {
         if(doublePair>triplePair && triplePair<paired)
         {
-            finalhand = "2 " + paired + " " + doublePair;
+            finalhand[0] = 2;
+            finalhand[1] = paired;
+            finalhand[2] = doublePair;
         }
         else if(triplePair>doublePair && doublePair<paired)
         {
-            finalhand = "2 " + paired + " " + triplePair;
+            finalhand[0] = 2;
+            finalhand[1] = paired;
+            finalhand[2] = triplePair;
         }
         else if(triplePair>paired && doublePair>paired)
         {
-            finalhand = "2 " + doublePair + " " + triplePair;
+            finalhand[0] = 2;
+            finalhand[1] = doublePair;
+            finalhand[2] = triplePair;
         }
        }
        else
        {
-        finalhand = "1 " + paired;
+        finalhand[0] = 1;
+        finalhand[1] = paired;
        }
     }
     else
     {
-        finalhand = "0 " + highCard;
+        finalhand[0] = 0;
+        finalhand[1] = highCard;
     }
 
         return finalhand;
