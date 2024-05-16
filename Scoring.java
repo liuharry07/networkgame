@@ -18,7 +18,6 @@ public class Scoring {
         bob[5] = new Card(3, 5);
         bob[6] = new Card(1, 1);
         Scoring joe = new Scoring(bob);
-        System.out.println(joe.valuateHand());
         
     }
 
@@ -50,11 +49,6 @@ public class Scoring {
         int flushHighCard = 0;
        Card[] down = sortHand();
        int m=0;
-       while(m<7)
-       {
-        System.out.println(down[m]);
-        m++;
-       }
        int highCard = down[0].getValue();
        posStraight.add(down[0]);
        for(int i=1; i<7; i++)
@@ -236,13 +230,11 @@ public class Scoring {
         flush = true;
         flushFace = 3;
        }
-       System.out.println("Straight List " + posStraight.toString());
        int la = 0;
        while(la<7 && down[la].getSuit() != flushFace)
        {
         la ++;
        }
-       System.out.println("through loop 1");
        Card[] straightList = new Card[5];
        if(la<7)
        {
@@ -267,13 +259,11 @@ public class Scoring {
         else
         {
             int a=0;
-        System.out.println(a<6 && (posStraight.get(a).getValue()-posStraight.get(a+1).getValue())==1 );
         while(a<6 && (posStraight.get(a).getValue()-posStraight.get(a+1).getValue())==1);
         {
             straightList[a] = posStraight.get(a);
             a++;
         }
-        System.out.println("through loop 2");
         if(a>=5)
         {
             straight = true;
@@ -330,13 +320,11 @@ public class Scoring {
                 }
                 through ++;
             }
-            System.out.println("through loop 4");
             if(spade >= 5 || club >= 5 || diamond >= 5 || heart >= 5)
             {
                 straightFlush = true;
             }
         }
-        System.out.println("got here 2");
         if(straightFlush)
         {
             finalhand[0] = 8;
