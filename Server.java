@@ -75,6 +75,13 @@ public class Server {
                     for(int j = 2; j < 7; ++j) {
                         combinedCards[j] = community[j - 2];
                     }
+
+                    /*
+                    for(int j = 0; j < 7; ++j) {
+                        System.out.println(combinedCards[j].toString());
+                    }
+                    */
+
                     int[] scores = (new Scoring(combinedCards)).valuateHand();
 
                     int rank = scores[0];
