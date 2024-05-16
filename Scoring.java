@@ -53,6 +53,14 @@ public class Scoring {
        posStraight.add(down[0]);
        for(int i=1; i<7; i++)
        {
+        if(down[i] == null)
+        {
+            finalhand[0] = 0;
+            finalhand[1] = 0;
+            finalhand[2] = 0;
+            return finalhand;
+        }
+        else
         if(down[i].getValue() != down[i-1].getValue())
         {
             posStraight.add(down[i]);
