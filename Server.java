@@ -1,5 +1,7 @@
 import java.io.*;
 import java.net.*;
+import java.util.*;
+import java.lang.Object.*;
 
 public class Server {
     private int players;
@@ -12,6 +14,7 @@ public class Server {
     private boolean[] foldedPlayers;
     private int numFoldedPlayers;
     private int startingPlayer;
+    private Map<Integer, Card[]> playerCards;
 
     Deck deck;
 
@@ -28,6 +31,7 @@ public class Server {
             }
 
             startingPlayer = 0;
+            playerCards = new HashMap<Integer, Card[]>();
 
             for(int i = 0; i < players; ++i) {
                 threads[i].send("start " + players);
@@ -55,20 +59,60 @@ public class Server {
                         }
                     }
                 }
+
+
+                int highestRank = 0;
+                int highestHighCard = 0;
+                int highestRandomCard = 0;
+
                 int winner = 0;
                 for(int i = 0; i < players; ++i) {
+                    Card[] combinedCards = new Card[7];
+                    for(int j = 0; j < 2; ++j) {
+                        combinedCards[j] = playerCards.get(i)[j];
+                    }
+
+                    for(int j = 2; j < 7; ++j) {
+                        combinedCards[j] = community[j - 2];
+                    }
+                    int[] scores = (new Scoring(combinedCards)).valuateHand();
+
+                    int rank = scores[0];
+                    int highCard = scores[1];
+                    int someRandomNumber = scores[2];
+
+                    if(rank > highestRank) {
+                        winner = i;
+                    }
+                    else if(rank == highestRank) {
+                        if(highCard > highestHighCard) {
+                            winner = i;
+                        }
+                        else if(highCard == highestHighCard) {
+                            if(someRandomNumber > highestRandomCard) {
+                                winner = i;
+                            }
+                        }
+                    }
+
+                    /*
                     if(!foldedPlayers[i]) {
                         winner = i;
                     }
+                    */
                 }
+
+
                 threads[winner].send("win " + pot);
 
-                ++startingPlayer; 
+                ++startingPlayer;
                 if(startingPlayer == players) {
                     startingPlayer = 0;
                 }
             }
-        } catch (IOException e) {
+        } catch (
+
+        IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -78,6 +122,8 @@ public class Server {
             Card card = deck.drawCard();
             Card card2 = deck.drawCard();
             threads[i].send("deal " + card.toMessage() + " " + card2.toMessage());
+            Card[] cards = {card, card2};
+            playerCards.put(i, cards);
         }
     }
 

@@ -112,7 +112,6 @@ public class Client extends Thread implements ActionListener {
                 //convert message string into array of tokens (originally separated by spaces)
                 String[] tokens = message.split(" ");
                 if(tokens[0].equals("start")) {
-                    bet.setEnabled(true);
                     players = Integer.parseInt(tokens[1]);
                     foldedPlayers = new boolean[players];
                     //call.setEnabled(true);
