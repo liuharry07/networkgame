@@ -10,14 +10,19 @@ public class Scoring {
     public static void main(String[] args)
     {
         Card[] bob = new Card[7];
-        bob[0] = new Card(0, 12);
-        bob[1] = new Card(0, 0);
-        bob[2] = new Card(0, 1);
+        bob[0] = new Card(0, 9);
+        bob[1] = new Card(0, 9);
+        bob[2] = new Card(0, 9);
         bob[3] = new Card(1, 3);
-        bob[4] = new Card(2, 2);
-        bob[5] = new Card(3, 5);
+        bob[4] = new Card(2, 3);
+        bob[5] = new Card(3, 10);
         bob[6] = new Card(1, 1);
         Scoring joe = new Scoring(bob);
+        int[] score = joe.valuateHand();
+        for(int i=0; i<3; i++)
+        {
+            System.out.println(score[i]);
+        }
         
     }
 
@@ -243,6 +248,7 @@ public class Scoring {
        {
         la ++;
        }
+       System.out.println("loop 1 end");
        Card[] straightList = new Card[5];
        if(la<7)
        {
@@ -267,11 +273,12 @@ public class Scoring {
         else
         {
             int a=0;
-        while(a<6 && (posStraight.get(a).getValue()-posStraight.get(a+1).getValue())==1);
+        while(a<6 && (posStraight.get(a).getValue()-posStraight.get(a+1).getValue())==1)
         {
             straightList[a] = posStraight.get(a);
             a++;
         }
+        System.out.println("loop 2 end");
         if(a>=5)
         {
             straight = true;
@@ -287,7 +294,7 @@ public class Scoring {
             {
                 posStraight.remove(1);
             }
-            while(b<4 && posStraight.get(b).getValue()-posStraight.get(b+1).getValue()==1);
+            while(b<4 && posStraight.get(b).getValue()-posStraight.get(b+1).getValue()==1)
             {
                 straightList[b] = posStraight.get(b);
                 b++;
@@ -386,17 +393,25 @@ public class Scoring {
                         finalhand[1] = dubTriple;
                     }
                 }
+            }
                 else
+                {
                 {
                     if(pair)
                     {
+                            if(!dubPair)
+                            {
+                                finalhand[0] = 6;
+                                finalhand[1] = trip;
+                                finalhand[2] = paired;
+                            }
                             if(doublePair>triplePair && doublePair>paired)
                             {
                                 finalhand[0] = 6;
                                 finalhand[1] = trip;
                                 finalhand[2] = doublePair;
                             }
-                            else if(doublePair>triplePair && paired>doublePair)
+                            else if(doublePair>=triplePair && paired>doublePair)
                             {
                                 finalhand[0] = 6;
                                 finalhand[1] = trip;
