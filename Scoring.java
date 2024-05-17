@@ -10,15 +10,15 @@ public class Scoring {
 
     public static void main(String[] args) {
         Card[] bob = new Card[7];
-        bob[0] = new Card(0, 12);
-        bob[1] = new Card(0, 0);
-        bob[2] = new Card(0, 1);
+        bob[0] = new Card(0, 9);
+        bob[1] = new Card(0, 9);
+        bob[2] = new Card(0, 9);
         bob[3] = new Card(1, 3);
-        bob[4] = new Card(2, 2);
-        bob[5] = new Card(3, 5);
+        bob[4] = new Card(2, 3);
+        bob[5] = new Card(3, 10);
         bob[6] = new Card(1, 1);
         Scoring joe = new Scoring(bob);
-
+        
     }
 
     public int[] valuateHand() {
@@ -48,211 +48,257 @@ public class Scoring {
         int flushHighCard = 0;
         sortHand();
         Card[] down = hand;
-        int highCard = down[0].getValue();
-        posStraight.add(down[0]);
-        for(int i = 1; i < 7; i++) {
-            if(down[i] == null) {
-                finalhand[0] = 0;
-                finalhand[1] = 0;
-                finalhand[2] = 0;
-                return finalhand;
-            }
-            else if(down[i].getValue() != down[i - 1].getValue()) {
-                posStraight.add(down[i]);
-            }
-            if(down[i].getValue() == down[i - 1].getValue() && !pair) {
-                pair = true;
-                paired = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && paired == down[i].getValue() && !dubPair && !triple) {
-                pair = false;
-                paired = -1;
-                triple = true;
-                trip = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && paired == down[i].getValue() && !dubPair && triple) {
-                pair = false;
-                paired = -1;
-                dubTrip = true;
-                dubTriple = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && paired == down[i].getValue() && dubPair && !tripPair && !triple) {
-                pair = true;
-                paired = doublePair;
-                dubPair = false;
-                doublePair = -1;
-                triple = true;
-                trip = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && paired == down[i].getValue() && dubPair && !tripPair && triple) {
-                pair = true;
-                paired = doublePair;
-                dubPair = false;
-                doublePair = -1;
-                dubTrip = true;
-                dubTriple = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && paired == down[i].getValue() && dubPair && tripPair && !triple) {
-                pair = true;
-                paired = doublePair;
-                dubPair = true;
-                doublePair = triplePair;
-                tripPair = false;
-                triplePair = -1;
-                triple = true;
-                trip = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && paired == down[i].getValue() && dubPair && tripPair && triple) {
-                pair = true;
-                paired = doublePair;
-                dubPair = true;
-                doublePair = triplePair;
-                tripPair = false;
-                triplePair = -1;
-                dubTrip = true;
-                dubTriple = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && pair && !dubPair) {
-                dubPair = true;
-                doublePair = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && doublePair == down[i].getValue() && !tripPair && !triple) {
-                dubPair = false;
-                doublePair = -1;
-                triple = true;
-                trip = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && doublePair == down[i].getValue() && !tripPair && triple) {
-                dubPair = false;
-                doublePair = -1;
-                dubTrip = true;
-                dubTriple = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && doublePair == down[i].getValue() && tripPair && !triple) {
-                dubPair = true;
-                doublePair = triplePair;
-                tripPair = false;
-                triplePair = -1;
-                triple = true;
-                trip = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && doublePair == down[i].getValue() && tripPair && triple) {
-                dubPair = true;
-                doublePair = triplePair;
-                tripPair = false;
-                triplePair = -1;
-                dubTrip = true;
-                dubTriple = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && pair && dubPair) {
-                tripPair = true;
-                triplePair = hand[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && triplePair == down[i].getValue() && !triple) {
-                tripPair = false;
-                triplePair = -1;
-                triple = true;
-                trip = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && triplePair == down[i].getValue() && triple) {
-                tripPair = false;
-                triplePair = -1;
-                dubTrip = true;
-                dubTriple = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && trip == down[i].getValue() && !dubTrip && !quad) {
-                triple = false;
-                trip = -1;
-                quad = true;
-                four = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && trip == down[i].getValue() && dubTrip && !quad) {
-                triple = true;
-                trip = dubTriple;
-                quad = true;
-                four = down[i].getValue();
-            }
-            else if(down[i].getValue() == down[i - 1].getValue() && dubTriple == down[i].getValue() && !quad) {
-                dubTrip = false;
-                dubTriple = -1;
-                quad = true;
-                four = down[i].getValue();
-            }
-            if(down[i].getSuit() == 0) {
-                flushSpade++;
-            }
-            else if(down[i].getSuit() == 1) {
-                flushClub++;
-            }
-            else if(down[i].getSuit() == 2) {
-                flushDiamond++;
-            }
-            else if(down[i].getSuit() == 3) {
-                flushHeart++;
-            }
+       int highCard = down[0].getValue();
+       posStraight.add(down[0]);
+       for(int i=1; i<7; i++)
+       {
+        if(down[i] == null)
+        {
+            finalhand[0] = 0;
+            finalhand[1] = 0;
+            finalhand[2] = 0;
+            return finalhand;
         }
-        if(flushSpade >= 5) {
-            flush = true;
-            flushFace = 0;
+        else
+        if(down[i].getValue() != down[i-1].getValue())
+        {
+            posStraight.add(down[i]);
         }
-        else if(flushClub >= 5) {
-            flush = true;
-            flushFace = 1;
+        if(down[i].getValue() == down[i-1].getValue() && !pair)
+        {
+            pair = true;
+            paired = down[i].getValue();
         }
-        else if(flushDiamond >= 5) {
-            flush = true;
-            flushFace = 2;
+        else if (down[i].getValue() == down[i-1].getValue() && paired == down[i].getValue() && !dubPair && !triple)
+        {
+            pair = false;
+            paired = -1;
+            triple = true;
+            trip = down[i].getValue();
         }
-        else if(flushHeart >= 5) {
-            flush = true;
-            flushFace = 3;
+        else if (down[i].getValue() == down[i-1].getValue() && paired == down[i].getValue() && !dubPair && triple)
+        {
+            pair = false;
+            paired = -1;
+            dubTrip = true;
+            dubTriple = down[i].getValue();
         }
-        int la = 0;
-        while(la < 7 && down[la].getSuit() != flushFace) {
-            la++;
+        else if (down[i].getValue() == down[i-1].getValue() && paired == down[i].getValue() && dubPair && !tripPair && !triple)
+        {
+            pair = true;
+            paired = doublePair;
+            dubPair = false;
+            doublePair = -1;
+            triple = true;
+            trip = down[i].getValue();
         }
-        Card[] straightList = new Card[5];
-        if(la < 7) {
-            flushHighCard = down[la].getValue();
+        else if (down[i].getValue() == down[i-1].getValue() && paired == down[i].getValue() && dubPair && !tripPair && triple)
+        {
+            pair = true;
+            paired = doublePair;
+            dubPair = false;
+            doublePair = -1;
+            dubTrip = true;
+            dubTriple = down[i].getValue();
         }
-        if(posStraight.size() >= 5) {
-            if(posStraight.get(0).getValue() == 12 && posStraight.get(posStraight.size() - 1).getValue() == 0 && posStraight.get(posStraight.size() - 2).getValue() == 1 && posStraight.get(posStraight.size() - 3).getValue() == 2 && posStraight.get(posStraight.size() - 4).getValue() == 3) {
+        else if (down[i].getValue() == down[i-1].getValue() && paired == down[i].getValue() && dubPair && tripPair && !triple)
+        {
+            pair = true;
+            paired = doublePair;
+            dubPair = true;
+            doublePair = triplePair;
+            tripPair = false;
+            triplePair = -1;
+            triple = true;
+            trip = down[i].getValue();
+        }
+        else if (down[i].getValue() == down[i-1].getValue() && paired == down[i].getValue() && dubPair && tripPair && triple)
+        {
+            pair = true;
+            paired = doublePair;
+            dubPair = true;
+            doublePair = triplePair;
+            tripPair = false;
+            triplePair = -1;
+            dubTrip = true;
+            dubTriple = down[i].getValue();
+        }
+        else if (down[i].getValue() == down[i-1].getValue() && pair && !dubPair)
+        {
+           dubPair = true;
+           doublePair = down[i].getValue();
+        }
+        else if (down[i].getValue() == down[i-1].getValue() && doublePair == down[i].getValue() && !tripPair && !triple)
+        {
+            dubPair = false;
+            doublePair = -1;
+            triple = true;
+            trip = down[i].getValue();
+        }
+        else if (down[i].getValue() == down[i-1].getValue() && doublePair == down[i].getValue() && !tripPair && triple)
+        {
+            dubPair = false;
+            doublePair = -1;
+            dubTrip = true;
+            dubTriple = down[i].getValue();
+        }
+        else if (down[i].getValue() == down[i-1].getValue() && doublePair == down[i].getValue() && tripPair && !triple)
+        {
+            dubPair = true;
+            doublePair = triplePair;
+            tripPair = false;
+            triplePair = -1;
+            triple = true;
+            trip = down[i].getValue();
+        }
+        else if (down[i].getValue() == down[i-1].getValue() && doublePair == down[i].getValue() && tripPair && triple)
+        {
+            dubPair = true;
+            doublePair = triplePair;
+            tripPair = false;
+            triplePair = -1;
+            dubTrip = true;
+            dubTriple = down[i].getValue();
+        }
+        else if (down[i].getValue() == down[i-1].getValue() && pair && dubPair)
+        {
+            tripPair = true;
+            triplePair = hand[i].getValue();
+        }
+        else if(down[i].getValue() == down[i-1].getValue() && triplePair == down[i].getValue() && !triple)
+        {
+            tripPair = false;
+            triplePair = -1;
+            triple = true;
+            trip = down[i].getValue();
+        }
+        else if(down[i].getValue() == down[i-1].getValue() && triplePair == down[i].getValue() && triple)
+        {
+            tripPair = false;
+            triplePair = -1;
+            dubTrip = true;
+            dubTriple = down[i].getValue();
+        }
+        else if(down[i].getValue() == down[i-1].getValue() && trip == down[i].getValue() && !dubTrip && !quad)
+        {
+            triple = false;
+            trip = -1;
+            quad = true;
+            four = down[i].getValue();
+        }
+        else if(down[i].getValue() == down[i-1].getValue() && trip == down[i].getValue() && dubTrip && !quad)
+        {
+            triple = true;
+            trip = dubTriple;
+            quad = true;
+            four = down[i].getValue();
+        }
+        else if(down[i].getValue() == down[i-1].getValue() && dubTriple == down[i].getValue() && !quad)
+        {
+            dubTrip = false;
+            dubTriple = -1;
+            quad = true;
+            four = down[i].getValue();
+        }
+        if(down[i].getSuit()==0)
+        {
+            flushSpade ++;
+        }
+        else if(down[i].getSuit()==1)
+        {
+            flushClub ++;
+        }
+        else if(down[i].getSuit()==2)
+        {
+            flushDiamond ++;
+        }
+        else  if(down[i].getSuit()==3)
+        {
+            flushHeart ++;
+        }
+    }
+       if(flushSpade >= 5)
+       {
+        flush = true;
+        flushFace = 0;
+       }
+       else if(flushClub >= 5)
+       {
+        flush = true;
+        flushFace = 1;
+       }
+       else if(flushDiamond >= 5)
+       {
+        flush = true;
+        flushFace = 2;
+       }
+       else if(flushHeart >= 5)
+       {
+        flush = true;
+        flushFace = 3;
+       }
+       int la = 0;
+       while(la<7 && down[la].getSuit() != flushFace)
+       {
+        la ++;
+       }
+       Card[] straightList = new Card[5];
+       if(la<7)
+       {
+       flushHighCard = down[la].getValue();
+       }
+       if(posStraight.size()>=5)
+       {
+        if(posStraight.get(0).getValue() == 12 && 
+            posStraight.get(posStraight.size()-1).getValue() == 0 && 
+            posStraight.get(posStraight.size()-2).getValue() == 1 && 
+            posStraight.get(posStraight.size()-3).getValue() == 2 && 
+            posStraight.get(posStraight.size()-4).getValue() == 3)
+        {
+            straight = true;
+            straightTop = 4;
+            straightList[0] = posStraight.get(0);
+            straightList[1] =  posStraight.get(posStraight.size()-1);
+            straightList[2] =  posStraight.get(posStraight.size()-2);
+            straightList[3] =  posStraight.get(posStraight.size()-3);
+            straightList[4] =  posStraight.get(posStraight.size()-4);
+        }
+        else
+        {
+            int a=0;
+        while(a<6 && (posStraight.get(a).getValue()-posStraight.get(a+1).getValue())==1);
+        {
+            straightList[a] = posStraight.get(a);
+            a++;
+        }
+        if(a>=5)
+        {
+            straight = true;
+            straightTop = posStraight.get(0).getValue();
+        }
+        else
+        if(a<=1)
+        {
+            int b = 0;
+            posStraight.remove(0);
+            straightList = new Card[5];
+            if(a==1)
+            {
+                posStraight.remove(1);
+            }
+            while(b<4 && posStraight.get(b).getValue()-posStraight.get(b+1).getValue()==1);
+            {
+                straightList[b] = posStraight.get(b);
+                b++;
+            }
+            if(b==5)
+            {
                 straight = true;
-                straightTop = 4;
-                straightList[0] = posStraight.get(0);
-                straightList[1] = posStraight.get(posStraight.size() - 1);
-                straightList[2] = posStraight.get(posStraight.size() - 2);
-                straightList[3] = posStraight.get(posStraight.size() - 3);
-                straightList[4] = posStraight.get(posStraight.size() - 4);
-            }
-            else {
-                int a = 0;
-                while(a < 6 && (posStraight.get(a).getValue() - posStraight.get(a + 1).getValue()) == 1) {
-                    straightList[a] = posStraight.get(a);
-                    a++;
-                }
-                if(a >= 5) {
-                    straight = true;
-                    straightTop = posStraight.get(0).getValue();
-                }
-                else if(a <= 1) {
-                    int b = 0;
-                    posStraight.remove(0);
-                    straightList = new Card[5];
-                    if(a == 1) {
-                        posStraight.remove(1);
-                    }
-                    while(b < 4 && posStraight.get(b).getValue() - posStraight.get(b + 1).getValue() == 1) {
-                        straightList[b] = posStraight.get(b);
-                        b++;
-                    }
-                    if(b == 5) {
-                        straight = true;
-                        straightTop = posStraight.get(0).getValue();
-                    }
-                }
+                straightTop = posStraight.get(0).getValue();
             }
         }
+        }
+    }
 
         if(straight) {
             int spade = 0;
@@ -320,23 +366,28 @@ public class Scoring {
                         finalhand[1] = dubTriple;
                     }
                 }
-                else {
-                    if(pair) {
-                        if(doublePair > triplePair && doublePair > paired) {
-                            finalhand[0] = 6;
-                            finalhand[1] = trip;
-                            finalhand[2] = doublePair;
-                        }
-                        else if(doublePair > triplePair && paired > doublePair) {
-                            finalhand[0] = 6;
-                            finalhand[1] = trip;
-                            finalhand[2] = paired;
-                        }
-                        else if(triplePair > paired) {
-                            finalhand[0] = 6;
-                            finalhand[1] = trip;
-                            finalhand[2] = triplePair;
-                        }
+                else
+                {
+                    if(pair)
+                    {
+                            if(doublePair>triplePair && doublePair>paired)
+                            {
+                                finalhand[0] = 6;
+                                finalhand[1] = trip;
+                                finalhand[2] = doublePair;
+                            }
+                            else if(doublePair>triplePair && paired>doublePair)
+                            {
+                                finalhand[0] = 6;
+                                finalhand[1] = trip;
+                                finalhand[2] = paired;
+                            }
+                            else if(triplePair>paired)
+                            {
+                                finalhand[0] = 6;
+                                finalhand[1] = trip;
+                                finalhand[2] = triplePair;
+                            }
                     }
                     else {
                         finalhand[0] = 3;
