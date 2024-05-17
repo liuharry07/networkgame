@@ -47,8 +47,8 @@ public class Scoring {
         int flushDiamond = 0;
         int flushClub = 0;
         int flushHighCard = 0;
-       Card[] down = sortHand();
-       int m=0;
+        sortHand();
+        Card[] down = hand;
        int highCard = down[0].getValue();
        posStraight.add(down[0]);
        for(int i=1; i<7; i++)
@@ -458,89 +458,21 @@ public class Scoring {
 //1 is one pair, 0 is high card (i.e. nothing better)
             
 
-    public Card[] sortHand()
+    public void sortHand()
     {
-        Card[] best = new Card[7];
-        int high = hand[0].getValue();
-        int c = 0;
-        int numMax = 0;
-        while( c<7)
-        {
-            if(hand[c].getValue()>high)
-            {
-                high = hand[c].getValue();
-                numMax = c;
-            }
-            c++;
-        }
-        best[0] = hand[numMax];
-        hand[numMax] = null;
-        for(int i=0; i<hand.length; i++)
-        {
-            for(int j=1; j<7; j++)
-            {
-            if(hand[i] == null && i<6)
-            {
-                i++;
-            }
-            if(best[j]==null)
-            {
-                best[j]=hand[i];
-                if(i<6)
-                i++;
-                else
-                break;
-                j=0;
-            }
-            else
-            if(hand[i].getValue()== best[j].getValue())
-            {
-                        Card present = best[j];
-                        Card next = best[j+1];
-                        int pres = j+1;
-                        best[j] = hand[i];
-                        while(pres<6)
-                        {
-                            best[pres] = present;
-                            present = next;
-                            next = best[pres+1];
-                            pres++;
-                        }
-                        best[pres] = present;
-                        if(i<6)
-                        i++;
-                        else
-                        break;
-                        j=0;
-            }
-            else if(hand[i].getValue()<best[j].getValue())
-            {
-                j=j;
-            }
-            else if(j!=6 && hand[i].getValue()>best[j].getValue())
-            {
-                Card present = best[j];
-                Card next = best[j+1];
-                int pres = j+1;
-                best[j] = hand[i];
-                while(pres<6)
-                {
-                    best[pres] = present;
-                    present = next;
-                    next = best[pres+1];
-                    pres++;
-                }
-                if(i<6)
-                i++;
-                else
-                break;
-                j=0;
-            }
-            }
-        }
-        return best;
+    for (int count = 0; count < hand.length; count++)
+    {
+    for (int i = 0; i < hand.length - 1; i++)
+    {
+    if (hand[i].getValue()<hand[i + 1].getValue())
+    {
+        Card now = hand[i];
+        hand[i] = hand[i+1];
+        hand[i+1] = now;
     }
-
+    }
+    }
+    }
 }
 
 
