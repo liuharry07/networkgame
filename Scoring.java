@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 public class Scoring {
     String rating;
     Card[] hand;
@@ -8,7 +7,8 @@ public class Scoring {
         hand = cards;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         Card[] bob = new Card[7];
         bob[0] = new Card(0, 9);
         bob[1] = new Card(0, 9);
@@ -18,10 +18,16 @@ public class Scoring {
         bob[5] = new Card(3, 10);
         bob[6] = new Card(1, 1);
         Scoring joe = new Scoring(bob);
+        int[] score = joe.valuateHand();
+        for(int i=0; i<3; i++)
+        {
+            System.out.println(score[i]);
+        }
         
     }
 
-    public int[] valuateHand() {
+    public int[] valuateHand()
+    {
         int[] finalhand = new int[3];
         ArrayList<Card> posStraight = new ArrayList<Card>();
         boolean pair = false;
@@ -242,6 +248,7 @@ public class Scoring {
        {
         la ++;
        }
+       System.out.println("loop 1 end");
        Card[] straightList = new Card[5];
        if(la<7)
        {
@@ -266,11 +273,12 @@ public class Scoring {
         else
         {
             int a=0;
-        while(a<6 && (posStraight.get(a).getValue()-posStraight.get(a+1).getValue())==1);
+        while(a<6 && (posStraight.get(a).getValue()-posStraight.get(a+1).getValue())==1)
         {
             straightList[a] = posStraight.get(a);
             a++;
         }
+        System.out.println("loop 2 end");
         if(a>=5)
         {
             straight = true;
@@ -286,7 +294,7 @@ public class Scoring {
             {
                 posStraight.remove(1);
             }
-            while(b<4 && posStraight.get(b).getValue()-posStraight.get(b+1).getValue()==1);
+            while(b<4 && posStraight.get(b).getValue()-posStraight.get(b+1).getValue()==1)
             {
                 straightList[b] = posStraight.get(b);
                 b++;
@@ -300,83 +308,110 @@ public class Scoring {
         }
     }
 
-        if(straight) {
+        if(straight)
+        {
             int spade = 0;
             int club = 0;
             int diamond = 0;
             int heart = 0;
             int through = 0;
-            while(through < 5) {
-                if(straightList[through].getSuit() == 0) {
-                    spade++;
+            while(through<5)
+            {
+                if(straightList[through].getSuit() == 0)
+                {
+                    spade ++;
                 }
-                if(straightList[through].getSuit() == 1) {
-                    club++;
+                if(straightList[through].getSuit() == 1)
+                {
+                    club ++;
                 }
-                if(straightList[through].getSuit() == 2) {
-                    diamond++;
+                if(straightList[through].getSuit() == 2)
+                {
+                    diamond ++;
                 }
-                if(straightList[through].getSuit() == 3) {
-                    heart++;
+                if(straightList[through].getSuit() == 3)
+                {
+                    heart ++;
                 }
-                through++;
+                through ++;
             }
-            if(spade >= 5 || club >= 5 || diamond >= 5 || heart >= 5) {
+            if(spade >= 5 || club >= 5 || diamond >= 5 || heart >= 5)
+            {
                 straightFlush = true;
             }
         }
-        if(straightFlush) {
+        if(straightFlush)
+        {
             finalhand[0] = 8;
             finalhand[1] = 0;
         }
-        else if(quad) {
+        else if(quad)
+        {
             finalhand[0] = 7;
             finalhand[1] = four;
         }
-        else if(flush) {
+        else if(flush)
+        {
             finalhand[0] = 4;
             finalhand[1] = flushHighCard;
         }
-        else if(straight) {
+        else if(straight)
+        {
             finalhand[0] = 3;
             finalhand[1] = straightTop;
         }
-        else if(triple) {
-            if(dubTrip) {
-                if(dubTriple > trip) {
-                    if(pair) {
-                        if(doublePair > triplePair && doublePair > paired) {
-                            finalhand[0] = 6;
-                            finalhand[1] = dubTriple;
-                            finalhand[2] = doublePair;
-                        }
-                        else if(doublePair > triplePair && paired > doublePair) {
-                            finalhand[0] = 6;
-                            finalhand[1] = dubTriple;
-                            finalhand[2] = paired;
-                        }
-                        else if(triplePair > paired) {
-                            finalhand[0] = 6;
-                            finalhand[1] = dubTriple;
-                            finalhand[2] = triplePair;
-                        }
-                    }
-                    else {
-                        finalhand[0] = 3;
-                        finalhand[1] = dubTriple;
-                    }
-                }
-                else
+        else if(triple)
+        {
+            if(dubTrip)
+            {
+                if(dubTriple > trip)
                 {
                     if(pair)
                     {
                             if(doublePair>triplePair && doublePair>paired)
                             {
                                 finalhand[0] = 6;
-                                finalhand[1] = trip;
+                                finalhand[1] = dubTriple;
                                 finalhand[2] = doublePair;
                             }
                             else if(doublePair>triplePair && paired>doublePair)
+                            {
+                                finalhand[0] = 6;
+                                finalhand[1] = dubTriple;
+                                finalhand[2] = paired;
+                            }
+                            else if(triplePair>paired)
+                            {
+                                finalhand[0] = 6;
+                                finalhand[1] = dubTriple;
+                                finalhand[2] = triplePair;
+                            }
+                    }
+                    else
+                    {
+                        finalhand[0] = 3;
+                        finalhand[1] = dubTriple;
+                    }
+                }
+            }
+                else
+                {
+                {
+                    if(pair)
+                    {
+                            if(!dubPair)
+                            {
+                                finalhand[0] = 6;
+                                finalhand[1] = trip;
+                                finalhand[2] = paired;
+                            }
+                            if(doublePair>triplePair && doublePair>paired)
+                            {
+                                finalhand[0] = 6;
+                                finalhand[1] = trip;
+                                finalhand[2] = doublePair;
+                            }
+                            else if(doublePair>=triplePair && paired>doublePair)
                             {
                                 finalhand[0] = 6;
                                 finalhand[1] = trip;
@@ -389,57 +424,69 @@ public class Scoring {
                                 finalhand[2] = triplePair;
                             }
                     }
-                    else {
+                    else
+                    {
                         finalhand[0] = 3;
                         finalhand[1] = trip;
                     }
                 }
             }
+       }
+       else if(pair)
+       {
+        if(dubPair)
+        {
+        if(doublePair>triplePair && triplePair<paired)
+        {
+            finalhand[0] = 2;
+            finalhand[1] = paired;
+            finalhand[2] = doublePair;
         }
-        else if(pair) {
-            if(dubPair) {
-                if(doublePair > triplePair && triplePair < paired) {
-                    finalhand[0] = 2;
-                    finalhand[1] = paired;
-                    finalhand[2] = doublePair;
-                }
-                else if(triplePair > doublePair && doublePair < paired) {
-                    finalhand[0] = 2;
-                    finalhand[1] = paired;
-                    finalhand[2] = triplePair;
-                }
-                else if(triplePair > paired && doublePair > paired) {
-                    finalhand[0] = 2;
-                    finalhand[1] = doublePair;
-                    finalhand[2] = triplePair;
-                }
-            }
-            else {
-                finalhand[0] = 1;
-                finalhand[1] = paired;
-            }
+        else if(triplePair>doublePair && doublePair<paired)
+        {
+            finalhand[0] = 2;
+            finalhand[1] = paired;
+            finalhand[2] = triplePair;
         }
-        else {
-            finalhand[0] = 0;
-            finalhand[1] = highCard;
+        else if(triplePair>paired && doublePair>paired)
+        {
+            finalhand[0] = 2;
+            finalhand[1] = doublePair;
+            finalhand[2] = triplePair;
         }
+       }
+       else
+       {
+        finalhand[0] = 1;
+        finalhand[1] = paired;
+       }
+    }
+    else
+    {
+        finalhand[0] = 0;
+        finalhand[1] = highCard;
+    }
 
         return finalhand;
     }
-    //8 is straight flush, 7 is four of a kind, 6 is fullhouse, 5 is flush, 4 is straight, 3 is three of a kind, 2 is two pairs,
-    //1 is one pair, 0 is high card (i.e. nothing better)
+//8 is straight flush, 7 is four of a kind, 6 is fullhouse, 5 is flush, 4 is straight, 3 is three of a kind, 2 is two pairs,
+//1 is one pair, 0 is high card (i.e. nothing better)
+            
 
-
-    public void sortHand() {
-        for(int count = 0; count < hand.length; count++) {
-            for(int i = 0; i < hand.length - 1; i++) {
-                if(hand[i].getValue() < hand[i + 1].getValue()) {
-                    Card now = hand[i];
-                    hand[i] = hand[i + 1];
-                    hand[i + 1] = now;
-                }
-            }
-        }
+    public void sortHand()
+    {
+    for (int count = 0; count < hand.length; count++)
+    {
+    for (int i = 0; i < hand.length - 1; i++)
+    {
+    if (hand[i].getValue()<hand[i + 1].getValue())
+    {
+        Card now = hand[i];
+        hand[i] = hand[i+1];
+        hand[i+1] = now;
+    }
+    }
+    }
     }
 }
 
