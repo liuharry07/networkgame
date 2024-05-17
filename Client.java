@@ -192,7 +192,6 @@ public class Client extends Thread implements ActionListener {
                 call.setEnabled(false);
                 fold.setEnabled(false);
                 chips -= incomingBet;
-                updateDisplay();
                 break;
             }
             case "check": {
@@ -201,7 +200,6 @@ public class Client extends Thread implements ActionListener {
                 check.setEnabled(false);
                 call.setEnabled(false);
                 fold.setEnabled(false);
-                updateDisplay();
                 break;
             }
             case "fold": {
@@ -210,7 +208,6 @@ public class Client extends Thread implements ActionListener {
                 check.setEnabled(false);
                 call.setEnabled(false);
                 fold.setEnabled(false);
-                updateDisplay();
                 break;
             }
         }
