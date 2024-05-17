@@ -10,12 +10,12 @@ public class Scoring {
     public static void main(String[] args)
     {
         Card[] bob = new Card[7];
-        bob[0] = new Card(0, 9);
-        bob[1] = new Card(0, 9);
-        bob[2] = new Card(0, 9);
-        bob[3] = new Card(1, 3);
-        bob[4] = new Card(2, 3);
-        bob[5] = new Card(3, 10);
+        bob[0] = new Card(0, 6);
+        bob[1] = new Card(0, 7);
+        bob[2] = new Card(0, 8);
+        bob[3] = new Card(1, 9);
+        bob[4] = new Card(2, 10);
+        bob[5] = new Card(3, 0);
         bob[6] = new Card(1, 1);
         Scoring joe = new Scoring(bob);
         int[] score = joe.valuateHand();
@@ -254,6 +254,10 @@ public class Scoring {
        {
        flushHighCard = down[la].getValue();
        }
+       for(int i=0; i<posStraight.size(); i++)
+       {
+        System.out.println(posStraight.get(i));
+       }
        if(posStraight.size()>=5)
        {
         if(posStraight.get(0).getValue() == 12 && 
@@ -275,9 +279,12 @@ public class Scoring {
             int a=0;
         while(a<6 && (posStraight.get(a).getValue()-posStraight.get(a+1).getValue())==1)
         {
+            System.out.println((posStraight.get(a).getValue()-posStraight.get(a+1).getValue())==1);
             straightList[a] = posStraight.get(a);
             a++;
         }
+        straightList[a] = posStraight.get(a);
+        a++;
         System.out.println("loop 2 end");
         if(a>=5)
         {
@@ -299,6 +306,8 @@ public class Scoring {
                 straightList[b] = posStraight.get(b);
                 b++;
             }
+            straightList[b] = posStraight.get(b);
+            b++;
             if(b==5)
             {
                 straight = true;
