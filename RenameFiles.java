@@ -7,7 +7,9 @@ public class RenameFiles {
 
         for(int i = 0; i < 4; ++i) {
             for(int j = 0; j < 13; ++j) {
-                File file = new File("card_" + suit[i] + "_" + value[j]);
+                File file = new File("Resources/Cards/card_" + suit[i] + "_" + value[j] + ".png");
+                File change = new File("Resources/Cards/" + i + "_" + j + ".png");
+                System.out.println(file.renameTo(change));
             }
         }
     }
