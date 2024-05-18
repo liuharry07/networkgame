@@ -91,14 +91,17 @@ public class Server {
 
                     if(rank > highestRank) {
                         winner = i;
+                        highestRank = rank;
                     }
                     else if(rank == highestRank) {
                         if(highCard > highestHighCard) {
                             winner = i;
+                            highestHighCard = highCard;
                         }
                         else if(highCard == highestHighCard) {
                             if(someRandomNumber > highestRandomCard) {
                                 winner = i;
+                                highestRandomCard = someRandomNumber;
                             }
                         }
                     }
@@ -110,6 +113,7 @@ public class Server {
                     */
                 }
 
+                System.out.println(winner);
 
                 threads[winner].send("win " + pot);
 
