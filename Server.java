@@ -63,6 +63,7 @@ public class Server {
                 int highestRank = 0;
                 int highestHighCard = 0;
                 int highestRandomCard = 0;
+                ArrayList<Integer> winners = new ArrayList<Integer>();
 
                 int winner = 0;
                 for(int i = 0; i < players; ++i) {
@@ -75,15 +76,16 @@ public class Server {
                         combinedCards[j] = community[j - 2];
                     }
 
-                    
-                    for(int j = 0; j < 7; ++j) {
-                        System.out.println(combinedCards[j].toString());
-                    }
+                    System.out.println(Arrays.toString(combinedCards));
+                    //for(int j = 0; j < 7; ++j) {
+                      //  System.out.println(combinedCards[j].toString());
+                   // }
                     
 
                     int[] scores = (new Scoring(combinedCards)).valuateHand();
 
                     System.out.println(Arrays.toString(scores));
+
 
                     int rank = scores[0];
                     int highCard = scores[1];
@@ -92,16 +94,28 @@ public class Server {
                     if(rank > highestRank) {
                         winner = i;
                         highestRank = rank;
+                        highestHighCard = highCard;
+                        highestRandomCard = someRandomNumber;
+                        winners = new ArrayList<Integer>();
+                        winners.add(i);
                     }
                     else if(rank == highestRank) {
                         if(highCard > highestHighCard) {
                             winner = i;
+                            winners = new ArrayList<Integer>();
                             highestHighCard = highCard;
+                            winners.add(i);
                         }
                         else if(highCard == highestHighCard) {
                             if(someRandomNumber > highestRandomCard) {
                                 winner = i;
+                                winners = new ArrayList<Integer>();
+                                winners.add(i);
                                 highestRandomCard = someRandomNumber;
+                            }
+                            else if(someRandomNumber == highestRandomCard)
+                            {
+                                winners.add(i);
                             }
                         }
                     }
@@ -112,10 +126,19 @@ public class Server {
                     }
                     */
                 }
-
-                System.out.println(winner);
-
+                if(winners.size()>1)
+                {
+                    int splitPot = pot/winners.size();
+                    for(int i=0; i<winners.size(); i++)
+                    {
+                        System.out.println("win " + i + " " + splitPot);
+                        threads[i].send("win " + splitPot);
+                    }
+                }
+                else{
+                    System.out.println("win " + winner);
                 threads[winner].send("win " + pot);
+                }
 
                 ++startingPlayer;
                 if(startingPlayer == players) {
