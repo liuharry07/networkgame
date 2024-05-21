@@ -3,7 +3,7 @@ public class Main {
         //if hosting a game run this code:
         hostGame();
         joinGame("localhost");
-        joinGame("localhost");
+        //joinGame("localhost");
         //joinGame("localhost");
 
 

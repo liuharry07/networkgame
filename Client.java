@@ -8,7 +8,7 @@ import javax.swing.*;
 public class Client extends Thread implements ActionListener {
     private BufferedReader in; //for receiving messages from the server
     private PrintWriter out; //for sending messages to the server
-    private JFrame frame;
+    //private JFrame frame;
     private JButton bet;
     private JButton call;
     private JButton check;
@@ -17,7 +17,9 @@ public class Client extends Thread implements ActionListener {
     private JTextField betValue;
     private JTextArea chipsDisplay;
     private JTextArea tableDisplay;
-   
+
+    private Display2 display;
+
     //need to write method
     private int players;
     private Card[] cards;
@@ -29,16 +31,19 @@ public class Client extends Thread implements ActionListener {
 
     public Client(String ipAddress) {
         try {
+            /*
             frame = new JFrame("poker");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            */
 
             cards = new Card[2];
-
             chips = 1000;
             incomingBet = 0;
             pot = 0;
             community = new ArrayList<Card>();
+            display = new Display2(players);
 
+            /*
             frame.getContentPane().setLayout(new GridLayout(2, 4));
 
             Font font = new Font(null, Font.PLAIN, 72);
@@ -86,6 +91,7 @@ public class Client extends Thread implements ActionListener {
             frame.getContentPane().add(tableDisplay);
 
             frame.pack();
+            */  
 
             //connect to server running on port 9000 of given ipAddress
             Socket socket = new Socket(ipAddress, 9000);
@@ -93,8 +99,10 @@ public class Client extends Thread implements ActionListener {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
 
+            /*
             frame.setSize(new Dimension(1000, 600));
             frame.setVisible(true);
+            */
 
             start();
         } catch (IOException e) {
@@ -111,45 +119,61 @@ public class Client extends Thread implements ActionListener {
 
                 //convert message string into array of tokens (originally separated by spaces)
                 String[] tokens = message.split(" ");
-                if(tokens[0].equals("start")) {
-                    players = Integer.parseInt(tokens[1]);
-                    foldedPlayers = new boolean[players];
-                    //call.setEnabled(true);
-                }
-                if(tokens[0].equals("deal")) {
-                    for(int i = 1; i < 5; i += 2) {
-                        cards[i / 2] = new Card(Integer.parseInt(tokens[i]), Integer.parseInt(tokens[i + 1]));
+
+                switch(tokens[0]) {
+                    case "start": {
+                        players = Integer.parseInt(tokens[1]);
+                        foldedPlayers = new boolean[players];
+                        break;
                     }
-                    hand.setText(cards[0].toString() + " " + cards[1].toString());
-                }
-                if(tokens[0].equals("turn")) {
-                    bet.setEnabled(true);
-                    fold.setEnabled(true);
-                    if(Integer.parseInt(tokens[1]) == 0) {
-                        check.setEnabled(true);
+                    case "deal": {
+                        for(int i = 1; i < 5; i += 2) {
+                            cards[i / 2] = new Card(Integer.parseInt(tokens[i]), Integer.parseInt(tokens[i + 1]));
+                        }
+                        //hand.setText(cards[0].toString() + " " + cards[1].toString());
+                        display.updateHand(cards.clone());
+                        break;
                     }
-                    else {
-                        call.setEnabled(true);
+                    case "turn": {
+                        /* 
+                        bet.setEnabled(true);
+                        fold.setEnabled(true);
+                        if(Integer.parseInt(tokens[1]) == 0) {
+                            check.setEnabled(true);
+                        }
+                        else {
+                            call.setEnabled(true);
+                        }
+                        */
+                        incomingBet = Integer.parseInt(tokens[1]);
+                        break;
                     }
-                    incomingBet = Integer.parseInt(tokens[1]);
+                    case "pot": {
+                        pot = Integer.parseInt(tokens[1]);
+                        break;
+                    }
+                    case "community": {
+                        Card card;
+                        card = new Card(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
+                        community.add(card);
+                        break;
+                    }
+                    case "win": {
+                        chips += Integer.parseInt(tokens[1]);
+                        break;
+                    }
+                    case "reset": {
+                        community = new ArrayList<Card>();
+                        incomingBet = 0;
+                        pot = 0;
+                        break;
+                    }
+                    case "fold": {
+                        foldedPlayers[Integer.parseInt(tokens[1])] = true;
+                        break;
+                    }
                 }
-                if(tokens[0].equals("pot")) {
-                    pot = Integer.parseInt(tokens[1]);
-                }
-                if(tokens[0].equals("community")) {
-                    Card card;
-                    card = new Card(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
-                    community.add(card);
-                }
-                if(tokens[0].equals("win")) {
-                    chips += Integer.parseInt(tokens[1]);
-                }
-                if(tokens[0].equals("reset")) {
-                    community = new ArrayList<Card>();
-                    incomingBet = 0;
-                    pot = 0;
-                }
-                updateDisplay();
+                //updateDisplay();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -177,10 +201,10 @@ public class Client extends Thread implements ActionListener {
                     chips -= Integer.parseInt(betValue.getText());
                     updateDisplay();
                 }
-                else if (betAmount > incomingBet) {
+                else if(betAmount > incomingBet) {
                     chipsDisplay.setText(chips + "\n incoming bet: " + incomingBet + "\n ERROR NEED BIGGER BET DUMBASS");
                 }
-                else if (betAmount <= chips) {
+                else if(betAmount <= chips) {
                     chipsDisplay.setText(chips + "\n incoming bet: " + incomingBet + "\n ERROR YOU CAN'T BET MONEY YOU DON'T HAVE YOU SILLY GOOBER");
                 }
                 break;

@@ -20,7 +20,7 @@ public class Server {
     public Server() throws InterruptedException {
         try {
             ServerSocket serverSocket = new ServerSocket(9000);
-            players = 2;
+            players = 1;
             threads = new ServerThread[players];
             sockets = new Socket[players];
 
