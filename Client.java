@@ -303,12 +303,13 @@ public class Client extends Thread implements ActionListener {
                 chips += oldIncomingBet;
                 if(incomingBet > chips) {
                     send("bet " + chips);
+                    chips = 0;
                 }
                 else {
                     send("bet " + incomingBet);
+                    chips-= incomingBet;
                 }
 
-                chips -= incomingBet;
                 oldIncomingBet = incomingBet;
 
                 disableButtons();
