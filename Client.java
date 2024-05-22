@@ -172,6 +172,7 @@ public class Client extends Thread implements ActionListener {
                         pot = Integer.parseInt(tokens[1]);
                         playerBets = new int[players];
                         incomingBet = 0;
+                        oldIncomingBet = 0;
                         win = false;
                         winAmount = 0;
                         break;
@@ -291,6 +292,7 @@ public class Client extends Thread implements ActionListener {
                     chips += oldIncomingBet;
                     chips -= value;
                     oldIncomingBet = value;
+
                 }
 
                 disableButtons();
