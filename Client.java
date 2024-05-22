@@ -30,6 +30,7 @@ public class Client extends Thread implements ActionListener {
     public Card[] cards;
     public int chips;
     public int pot;
+    public int oldIncomingBet;
     public int incomingBet;
     public ArrayList<Card> community;
     public boolean[] foldedPlayers;
@@ -163,6 +164,7 @@ public class Client extends Thread implements ActionListener {
                                 buttons[1] = true;
                             }
                             incomingBet = Integer.parseInt(tokens[1]);
+                            oldIncomingBet = incomingBet;
                         }
                         break;
                     }
@@ -296,6 +298,7 @@ public class Client extends Thread implements ActionListener {
             case 1: {
                 send("bet " + incomingBet);
 
+                chips += oldIncomingBet;
                 chips -= incomingBet;
 
                 disableButtons();

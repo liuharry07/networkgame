@@ -40,16 +40,17 @@ public class Display2 extends JComponent implements KeyListener, MouseListener, 
         addKeyListener(this);
         addMouseListener(this);
 
-        
+        /* 
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         if(gd.isFullScreenSupported()) {
             gd.setFullScreenWindow(frame);
         }
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(screenSize.width, screenSize.height);
+        */
         
 
-        //frame.setSize(1440, 800);
+        frame.setSize(1440, 800);
 
         slider = new JSlider(0, 100);
         slider.setBounds(frame.getWidth() / 3, frame.getHeight() / 10 * 9, frame.getWidth() / 3, frame.getHeight() / 10);
@@ -76,8 +77,14 @@ public class Display2 extends JComponent implements KeyListener, MouseListener, 
         int width = this.getWidth();
         int height = this.getHeight();
 
+
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, width, height);
+
+
+        Image table = new ImageIcon("Resources/Table.png").getImage();
+        g.drawImage(table, 0, 0, width, (table.getHeight(null) / table.getWidth(null)) * width, null);
+
 
         if(client.cards[0] != null && client.cards[1] != null) {
             Image card1 = new ImageIcon("Resources/Cards/" + client.cards[0].getSuit() + "_" + client.cards[0].getValue() + ".png").getImage();
