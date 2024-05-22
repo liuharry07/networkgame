@@ -20,7 +20,7 @@ public class Server {
     public Server() throws InterruptedException {
         try {
             ServerSocket serverSocket = new ServerSocket(9000);
-            players = 1;
+            players = 4;
             threads = new ServerThread[players];
             sockets = new Socket[players];
 
@@ -33,7 +33,7 @@ public class Server {
             playerCards = new HashMap<Integer, Card[]>();
 
             for(int i = 0; i < players; ++i) {
-                threads[i].send("start " + players);
+                threads[i].send("start " + players + " " + i);
             }
 
             while(true) {
@@ -78,9 +78,9 @@ public class Server {
 
                     System.out.println(Arrays.toString(combinedCards));
                     //for(int j = 0; j < 7; ++j) {
-                      //  System.out.println(combinedCards[j].toString());
-                   // }
-                    
+                    //  System.out.println(combinedCards[j].toString());
+                    // }
+
 
                     int[] scores = (new Scoring(combinedCards)).valuateHand();
 
@@ -113,8 +113,7 @@ public class Server {
                                 winners.add(i);
                                 highestRandomCard = someRandomNumber;
                             }
-                            else if(someRandomNumber == highestRandomCard)
-                            {
+                            else if(someRandomNumber == highestRandomCard) {
                                 winners.add(i);
                             }
                         }
@@ -126,18 +125,16 @@ public class Server {
                     }
                     */
                 }
-                if(winners.size()>1)
-                {
-                    int splitPot = pot/winners.size();
-                    for(int i=0; i<winners.size(); i++)
-                    {
+                if(winners.size() > 1) {
+                    int splitPot = pot / winners.size();
+                    for(int i = 0; i < winners.size(); i++) {
                         System.out.println("win " + i + " " + splitPot);
                         threads[i].send("win " + splitPot);
                     }
                 }
-                else{
+                else {
                     System.out.println("win " + winner);
-                threads[winner].send("win " + pot);
+                    threads[winner].send("win " + pot);
                 }
 
                 ++startingPlayer;
@@ -190,10 +187,16 @@ public class Server {
     private synchronized int goAround(int startingPlayer) throws InterruptedException {
         int i = startingPlayer;
         int oldBet = bet;
-        threads[i].send("turn " + bet);
+        for(int j = 0; j < players; ++j)
+            threads[j].send("turn " + bet + " " + i);
         wait();
         if(bet > oldBet) {
             startingPlayer = i;
+        }
+        if(!foldedPlayers[i]) {
+            for(int j = 0; j < players; ++j) {
+                threads[j].send("bet " + i + " " + bet);
+            }
         }
         ++i;
         if(i == players) {
@@ -202,15 +205,21 @@ public class Server {
         while(i != startingPlayer) {
             if(!foldedPlayers[i]) {
                 oldBet = bet;
-                threads[i].send("turn " + bet);
+                for(int j = 0; j < players; ++j)
+                    threads[j].send("turn " + bet + " " + i);
                 wait();
                 if(bet > oldBet) {
                     startingPlayer = i;
                 }
-            }
-            ++i;
-            if(i == players) {
-                i = 0;
+                if(!foldedPlayers[i]) {
+                    for(int j = 0; j < players; ++j) {
+                        threads[j].send("bet " + i + " " + bet);
+                    }
+                }
+                ++i;
+                if(i == players) {
+                    i = 0;
+                }
             }
         }
         return bet;

@@ -3,8 +3,9 @@ public class Main {
         //if hosting a game run this code:
         hostGame();
         joinGame("localhost");
-        //joinGame("localhost");
-        //joinGame("localhost");
+        joinGame("localhost");
+        joinGame("localhost");
+        joinGame("localhost");
 
 
         //if joining a game, run this code with host's IP address:
