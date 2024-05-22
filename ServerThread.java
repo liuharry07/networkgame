@@ -29,6 +29,9 @@ public class ServerThread extends Thread {
                 if(tokens[0].equals("fold")) {
                     server.fold(playerNum);
                 }
+                if(tokens[0].equals("reset")) {
+                    server.reset();
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

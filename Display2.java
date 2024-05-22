@@ -228,7 +228,11 @@ public class Display2 extends JComponent implements KeyListener, MouseListener, 
         repaint();
     }
 
-    public void keyPressed(KeyEvent e) {}
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == 13) {
+            client.reset();
+        }
+    }
 
     public void keyReleased(KeyEvent e) {}
 

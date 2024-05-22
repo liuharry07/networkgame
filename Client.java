@@ -351,4 +351,8 @@ public class Client extends Thread implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {}
+
+    public void reset() {
+        send("reset");
+    }
 }

@@ -272,4 +272,10 @@ public class Server {
         }
         return false;
     }
+
+    public void reset() {
+        for(int i = 0; i < players; ++i) {
+            threads[i].send("reset");
+        }
+    }
 }
