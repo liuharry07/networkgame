@@ -229,7 +229,9 @@ public class Display2 extends JComponent implements KeyListener, MouseListener, 
     }
 
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == 13) {
+        System.out.println(e.getKeyCode());
+        if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+            System.out.println();
             client.reset();
         }
     }
@@ -246,7 +248,6 @@ public class Display2 extends JComponent implements KeyListener, MouseListener, 
         for(int i = 0; i < buttonRegions.length; ++i) {
             if(buttonRegions[i].contains(e.getX(), e.getY())) {
                 client.buttonAction(i, slider.getValue());
-
             }
         }
     }

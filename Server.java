@@ -274,6 +274,12 @@ public class Server {
     }
 
     public void reset() {
+        pot = 0;
+        bet = 0;
+        deck = new Deck();
+        community = new Card[5];
+        foldedPlayers = new boolean[players];
+        numFoldedPlayers = 0;
         for(int i = 0; i < players; ++i) {
             threads[i].send("reset");
         }
