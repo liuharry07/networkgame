@@ -300,9 +300,14 @@ public class Client extends Thread implements ActionListener {
                 break;
             }
             case 1: {
-                send("bet " + incomingBet);
-
                 chips += oldIncomingBet;
+                if(incomingBet > chips) {
+                    send("bet " + chips);
+                }
+                else {
+                    send("bet " + incomingBet);
+                }
+
                 chips -= incomingBet;
                 oldIncomingBet = incomingBet;
 

@@ -20,7 +20,7 @@ public class Server {
     public Server() throws InterruptedException {
         try {
             ServerSocket serverSocket = new ServerSocket(9000);
-            players = 4;
+            players = 2;
             threads = new ServerThread[players];
             sockets = new Socket[players];
 
@@ -68,54 +68,56 @@ public class Server {
                 int winner = 0;
                 if(numFoldedPlayers != players - 1) {
                     for(int i = 0; i < players; ++i) {
-                        Card[] combinedCards = new Card[7];
-                        for(int j = 0; j < 2; ++j) {
-                            combinedCards[j] = playerCards.get(i)[j];
-                        }
+                        if(!foldedPlayers[i]) {
+                            Card[] combinedCards = new Card[7];
+                            for(int j = 0; j < 2; ++j) {
+                                combinedCards[j] = playerCards.get(i)[j];
+                            }
 
-                        for(int j = 2; j < 7; ++j) {
-                            combinedCards[j] = community[j - 2];
-                        }
+                            for(int j = 2; j < 7; ++j) {
+                                combinedCards[j] = community[j - 2];
+                            }
 
-                        System.out.println(Arrays.toString(combinedCards));
-                        //for(int j = 0; j < 7; ++j) {
-                        //  System.out.println(combinedCards[j].toString());
-                        // }
-
-
-                        int[] scores = (new Scoring(combinedCards)).valuateHand();
-
-                        System.out.println(Arrays.toString(scores));
+                            System.out.println(Arrays.toString(combinedCards));
+                            //for(int j = 0; j < 7; ++j) {
+                            //  System.out.println(combinedCards[j].toString());
+                            // }
 
 
-                        int rank = scores[0];
-                        int highCard = scores[1];
-                        int someRandomNumber = scores[2];
+                            int[] scores = (new Scoring(combinedCards)).valuateHand();
 
-                        if(rank > highestRank) {
-                            winner = i;
-                            highestRank = rank;
-                            highestHighCard = highCard;
-                            highestRandomCard = someRandomNumber;
-                            winners = new ArrayList<Integer>();
-                            winners.add(i);
-                        }
-                        else if(rank == highestRank) {
-                            if(highCard > highestHighCard) {
+                            System.out.println(Arrays.toString(scores));
+
+
+                            int rank = scores[0];
+                            int highCard = scores[1];
+                            int someRandomNumber = scores[2];
+
+                            if(rank > highestRank) {
                                 winner = i;
-                                winners = new ArrayList<Integer>();
+                                highestRank = rank;
                                 highestHighCard = highCard;
+                                highestRandomCard = someRandomNumber;
+                                winners = new ArrayList<Integer>();
                                 winners.add(i);
                             }
-                            else if(highCard == highestHighCard) {
-                                if(someRandomNumber > highestRandomCard) {
+                            else if(rank == highestRank) {
+                                if(highCard > highestHighCard) {
                                     winner = i;
                                     winners = new ArrayList<Integer>();
+                                    highestHighCard = highCard;
                                     winners.add(i);
-                                    highestRandomCard = someRandomNumber;
                                 }
-                                else if(someRandomNumber == highestRandomCard) {
-                                    winners.add(i);
+                                else if(highCard == highestHighCard) {
+                                    if(someRandomNumber > highestRandomCard) {
+                                        winner = i;
+                                        winners = new ArrayList<Integer>();
+                                        winners.add(i);
+                                        highestRandomCard = someRandomNumber;
+                                    }
+                                    else if(someRandomNumber == highestRandomCard) {
+                                        winners.add(i);
+                                    }
                                 }
                             }
                         }

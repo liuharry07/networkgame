@@ -257,8 +257,9 @@ public class Display2 extends JComponent implements KeyListener, MouseListener, 
 }
 
 /*
- * every player bet is on client
- * shows whose turn it is
+ * every player bet is on client done
+ * shows whose turn it is done
  * chips under each player
- * indicate when someone wins!!!!
+ * indicate when someone wins!!!! done
+ * can't call when too much
  */
