@@ -40,16 +40,16 @@ public class Display2 extends JComponent implements KeyListener, MouseListener, 
         addKeyListener(this);
         addMouseListener(this);
 
-        /*
+        
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         if(gd.isFullScreenSupported()) {
             gd.setFullScreenWindow(frame);
         }
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(screenSize.width, screenSize.height);
-        */
+        
 
-        frame.setSize(1440, 800);
+        //frame.setSize(1440, 800);
 
         slider = new JSlider(0, 100);
         slider.setBounds(frame.getWidth() / 3, frame.getHeight() / 10 * 9, frame.getWidth() / 3, frame.getHeight() / 10);
