@@ -288,8 +288,9 @@ public class Client extends Thread implements ActionListener {
                 if(value > incomingBet && value <= chips) {
                     send("bet " + value);
 
+                    chips += oldIncomingBet;
                     chips -= value;
-
+                    oldIncomingBet = value;
                 }
 
                 disableButtons();
