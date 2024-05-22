@@ -41,7 +41,7 @@ public class Client extends Thread implements ActionListener {
             incomingBet = 0;
             pot = 0;
             community = new ArrayList<Card>();
-            display = new Display2(players);
+            display = new Display2(players, this);
 
             /*
             frame.getContentPane().setLayout(new GridLayout(2, 4));
@@ -156,7 +156,7 @@ public class Client extends Thread implements ActionListener {
                         Card card;
                         card = new Card(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
                         community.add(card);
-                        break;
+                        display.updateCommunity(community);                        break;
                     }
                     case "win": {
                         chips += Integer.parseInt(tokens[1]);
