@@ -194,6 +194,7 @@ public class Client extends Thread implements ActionListener {
                         community = new ArrayList<Card>();
                         incomingBet = 0;
                         pot = 0;
+                        foldedPlayers = new boolean[players];
                         break;
                     }
                     case "fold": {

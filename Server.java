@@ -20,7 +20,7 @@ public class Server {
     public Server() throws InterruptedException {
         try {
             ServerSocket serverSocket = new ServerSocket(9000);
-            players = 2;
+            players = 4;
             threads = new ServerThread[players];
             sockets = new Socket[players];
 
@@ -196,6 +196,12 @@ public class Server {
 
     private synchronized int goAround(int startingPlayer) throws InterruptedException {
         int i = startingPlayer;
+        while(foldedPlayers[i]) {
+            ++i;
+            if(i == players) {
+                i = 0;
+            }
+        }
         int oldBet = bet;
         for(int j = 0; j < players; ++j)
             threads[j].send("turn " + bet + " " + i);
@@ -226,10 +232,10 @@ public class Server {
                         threads[j].send("bet " + i + " " + bet);
                     }
                 }
-                ++i;
-                if(i == players) {
-                    i = 0;
-                }
+            }
+            ++i;
+            if(i == players) {
+                i = 0;
             }
         }
         return bet;
@@ -241,12 +247,12 @@ public class Server {
     }
 
     public synchronized void fold(int playerNum) {
-        notifyAll();
         for(int i = 0; i < players; ++i) {
             threads[i].send("fold " + playerNum);
         }
         foldedPlayers[playerNum] = true;
         ++numFoldedPlayers;
+        notifyAll();
     }
 
     public boolean getBets(int startingPlayer) {
