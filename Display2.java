@@ -40,17 +40,17 @@ public class Display2 extends JComponent implements KeyListener, MouseListener, 
         addKeyListener(this);
         addMouseListener(this);
 
-        /* 
+        
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         if(gd.isFullScreenSupported()) {
             gd.setFullScreenWindow(frame);
         }
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(screenSize.width, screenSize.height);
-        */
+        
         
 
-        frame.setSize(1440, 800);
+        //frame.setSize(1440, 800);
 
         slider = new JSlider(0, 100);
         slider.setBounds(frame.getWidth() / 3, frame.getHeight() / 10 * 9, frame.getWidth() / 3, frame.getHeight() / 10);
@@ -82,8 +82,8 @@ public class Display2 extends JComponent implements KeyListener, MouseListener, 
         g.fillRect(0, 0, width, height);
 
 
-        Image table = new ImageIcon("Resources/Table.png").getImage();
-        g.drawImage(table, 0, 0, width, (table.getHeight(null) / table.getWidth(null)) * width, null);
+       Image table = new ImageIcon("Resources/Table.png").getImage();
+        g.drawImage(table, 0, 0, width, height +50, null);
 
 
         if(client.cards[0] != null && client.cards[1] != null) {
@@ -117,37 +117,37 @@ public class Display2 extends JComponent implements KeyListener, MouseListener, 
             if(client.players > 1) {
                 int num = (client.playerNum + 1) % client.players;
                 if(client.foldedPlayers[num] == true) {
-                    g.drawImage(cardEmpty, width - 4 * cardWidth / 2, height / 2, cardWidth, cardHeight, null);
-                    g.drawImage(cardEmpty, width - 6 * cardWidth / 2, height / 2, cardWidth, cardHeight, null);
+                    g.drawImage(cardEmpty, width - 5 * cardWidth / 2, height / 8 * 5, cardWidth, cardHeight, null);
+                    g.drawImage(cardEmpty, width - 7 * cardWidth / 2, height / 8 * 5, cardWidth, cardHeight, null);
                 }
                 else {
-                    g.drawImage(cardBack, width - 4 * cardWidth / 2, height / 2, cardWidth, cardHeight, null);
-                    g.drawImage(cardBack, width - 6 * cardWidth / 2, height / 2, cardWidth, cardHeight, null);
+                    g.drawImage(cardBack, width - 5 * cardWidth / 2, height / 8 * 5, cardWidth, cardHeight, null);
+                    g.drawImage(cardBack, width - 7 * cardWidth / 2, height / 8 * 5, cardWidth, cardHeight, null);
                 }
                 if(client.turn == num) {
-                    g.drawString("->", width - 7 * cardWidth / 2, height / 2 + 15);
+                    g.drawString("->", width - 8 * cardWidth / 2, height / 8 * 5 + 15);
                 }
                 else {
-                    g.drawString(Integer.toString(client.playerBets[num]), width - 7 * cardWidth / 2, height / 2 + 15);
+                    g.drawString(Integer.toString(client.playerBets[num]), width - 8 * cardWidth / 2, height / 8 * 5 + 15);
                 }
             }
             //put player money underneath
             if(client.players > 2) {
                 int num = (client.playerNum + 2) % client.players;
                 if(client.foldedPlayers[num] == true) {
-                    g.drawImage(cardEmpty, width - 4 * cardWidth / 2, height / 4, cardWidth, cardHeight, null);
-                    g.drawImage(cardEmpty, width - 6 * cardWidth / 2, height / 4, cardWidth, cardHeight, null);
+                    g.drawImage(cardEmpty, width - 5 * cardWidth / 2, height / 8 * 3, cardWidth, cardHeight, null);
+                    g.drawImage(cardEmpty, width - 7 * cardWidth / 2, height / 8 * 3, cardWidth, cardHeight, null);
                 }
                 else {
-                    g.drawImage(cardBack, width - 4 * cardWidth / 2, height / 4, cardWidth, cardHeight, null);
-                    g.drawImage(cardBack, width - 6 * cardWidth / 2, height / 4, cardWidth, cardHeight, null);
+                    g.drawImage(cardBack, width - 5 * cardWidth / 2, height / 8 * 3, cardWidth, cardHeight, null);
+                    g.drawImage(cardBack, width - 7 * cardWidth / 2, height / 8 * 3, cardWidth, cardHeight, null);
                 }
 
                 if(client.turn == num) {
-                    g.drawString("->", width - 7 * cardWidth / 2, height / 4 + 15);
+                    g.drawString("->", width - 8 * cardWidth / 2, height / 8 * 3 + 15);
                 }
                 else {
-                    g.drawString(Integer.toString(client.playerBets[num]), width - 7 * cardWidth / 2, height / 4 + 15);
+                    g.drawString(Integer.toString(client.playerBets[num]), width - 8 * cardWidth / 2, height / 8 * 3 + 15);
 
                 }
             }
@@ -155,19 +155,19 @@ public class Display2 extends JComponent implements KeyListener, MouseListener, 
             if(client.players > 3) {
                 int num = (client.playerNum + 3) % client.players;
                 if(client.foldedPlayers[num] == true) {
-                    g.drawImage(cardEmpty, 4 * cardWidth / 2, height / 2, cardWidth, cardHeight, null);
-                    g.drawImage(cardEmpty, 2 * cardWidth / 2, height / 2, cardWidth, cardHeight, null);
+                    g.drawImage(cardEmpty, 5 * cardWidth / 2, height / 8 * 5, cardWidth, cardHeight, null);
+                    g.drawImage(cardEmpty, 3 * cardWidth / 2, height / 8 * 5, cardWidth, cardHeight, null);
                 }
                 else {
-                    g.drawImage(cardBack, 4 * cardWidth / 2, height / 2, cardWidth, cardHeight, null);
-                    g.drawImage(cardBack, 2 * cardWidth / 2, height / 2, cardWidth, cardHeight, null);
+                    g.drawImage(cardBack, 5 * cardWidth / 2, height / 8 * 5, cardWidth, cardHeight, null);
+                    g.drawImage(cardBack, 3 * cardWidth / 2, height / 8 * 5, cardWidth, cardHeight, null);
                 }
 
                 if(client.turn == num) {
-                    g.drawString("<-", 6 * cardWidth / 2, height / 2 + 15);
+                    g.drawString("<-", 7 * cardWidth / 2, height / 8 * 5 + 15);
                 }
                 else {
-                    g.drawString(Integer.toString(client.playerBets[num]), 6 * cardWidth / 2, height / 2 + 15);
+                    g.drawString(Integer.toString(client.playerBets[num]), 7 * cardWidth / 2, height / 8 * 5 + 15);
                 }
             }
 
