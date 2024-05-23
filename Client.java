@@ -158,6 +158,10 @@ public class Client extends Thread implements ActionListener {
                         if(turn == playerNum) {
                             buttons[0] = true;
                             buttons[3] = true;
+                            if(chips == 0)
+                            {
+                                buttons[0] = false;
+                            }
                             if(Integer.parseInt(tokens[1]) == 0) {
                                 buttons[2] = true;
                             }
@@ -287,15 +291,13 @@ public class Client extends Thread implements ActionListener {
         switch(button) {
             case 0: {
 
-                if(value > incomingBet && value <= chips) {
+                if(value >= incomingBet && value <= chips) {
                     send("bet " + value);
 
                     chips += oldIncomingBet;
                     chips -= value;
                     oldIncomingBet = value;
-
                 }
-
                 disableButtons();
                 break;
             }
