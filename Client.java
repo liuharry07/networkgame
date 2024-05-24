@@ -158,17 +158,25 @@ public class Client extends Thread implements ActionListener {
                         if(turn == playerNum) {
                             buttons[0] = true;
                             buttons[3] = true;
-                            if(chips == 0)
+                            if(incomingBet== chips)
                             {
                                 buttons[0] = false;
                             }
-                            if(Integer.parseInt(tokens[1]) == 0) {
+                            incomingBet = Integer.parseInt(tokens[1]);
+                            if(chips == 0 || chips - incomingBet == 0)
+                            {
+                                buttons[0] = false;
+                            }
+                            if(incomingBet == 0) {
                                 buttons[2] = true;
                             }
                             else {
                                 buttons[1] = true;
                             }
-                            incomingBet = Integer.parseInt(tokens[1]);
+                            if(incomingBet>chips)
+                            {
+                                buttons[1] = false;
+                            }
                         }
                         break;
                     }
@@ -304,8 +312,8 @@ public class Client extends Thread implements ActionListener {
             case 1: {
                 chips += oldIncomingBet;
                 if(incomingBet > chips) {
-                    send("bet " + chips);
-                    chips = 0;
+                    send("fold");
+                    
                 }
                 else {
                     send("bet " + incomingBet);
